@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-image-deployment
+  labels:
+    app: docker-image
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: '50%'
+  selector:
+    matchLabels:
+      app: docker-image
+  template:
+    metadata:
+      labels:
+        app: docker-image
+    spec:
+      containers:
+      - name: docker-image
+        image: registry.cluster.wik.cloud/public/echo
+        ports:
+        - containerPort: 8080
